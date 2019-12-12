@@ -11,13 +11,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Expense Planner',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("Expense Planner"),
-        ),
-        body: SingleChildScrollView(child: MyHomePage()),
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+        accentColor: Colors.limeAccent
       ),
+      title: 'Expense Planner',
+      home: MyHomePage(),
     );
   }
 }
@@ -28,11 +27,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void addTxnMethod(Transaction transaction){
+  void startAddTxn(context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return AddTx(addTxnMethod);
+      },
+    );
+  }
+
+  void addTxnMethod(Transaction transaction) {
     setState(() {
       transactions.add(transaction);
     });
   }
+
   final List<Transaction> transactions = [
     Transaction(
       amount: 250,
@@ -49,22 +58,34 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(10),
-          child: Card(
-            child: Text("Graph Here"),
-            elevation: 5,
-            color: Colors.brown,
-            margin: EdgeInsets.all(10),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Expense Planner"),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(10),
+              child: Card(
+                child: Text("Graph Here"),
+                elevation: 5,
+                color: Theme.of(context).primaryColor,
+                margin: EdgeInsets.all(10),
+              ),
+            ),
+            // AddTx(addTxnMethod),
+            ShowTx(transactions),
+          ],
         ),
-        AddTx(addTxnMethod),
-        ShowTx(transactions),
-      ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add_circle_outline),
+        onPressed: () => startAddTxn(context),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

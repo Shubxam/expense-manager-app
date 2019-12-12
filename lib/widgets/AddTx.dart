@@ -1,11 +1,35 @@
 import 'package:flutter/material.dart';
 import '../Models/Transaction.dart';
 
-class AddTx extends StatelessWidget {
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController amountController = TextEditingController();
+class AddTx extends StatefulWidget {
   final Function addTxnFn;
   AddTx(this.addTxnFn);
+
+  @override
+  _AddTxState createState() => _AddTxState();
+}
+
+class _AddTxState extends State<AddTx> {
+  final titleController = TextEditingController();
+
+  final amountController = TextEditingController();
+
+  void addTxnLocal() {
+    if ((titleController.text).isEmpty ||
+        double.parse(amountController.text) <= 0) {
+      return;
+    }
+    widget.addTxnFn(
+      Transaction(
+        amount: double.parse(amountController.text),
+        item: titleController.text,
+        id: DateTime.now().toString(),
+        date: DateTime.now(),
+      ),
+    );
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -19,23 +43,22 @@ class AddTx extends StatelessWidget {
             TextField(
               decoration: InputDecoration(labelText: "Title"),
               controller: titleController,
+              // onSubmitted: (_) {
+              //   addTxnLocal();
+              // },
             ),
             TextField(
               decoration: InputDecoration(labelText: "Amount"),
               controller: amountController,
+              keyboardType: TextInputType.number,
+              // onSubmitted: (_) {
+              //   addTxnLocal();
+              // },
             ),
-            RaisedButton(
+            FlatButton(
               child: Text("Submit"),
-              onPressed: () {
-                addTxnFn(
-                  Transaction(
-                    amount: double.parse(amountController.text),
-                    item: titleController.text,
-                    id: DateTime.now().toString(),
-                    date: DateTime.now(),
-                  ),
-                );
-              },
+              textColor: Colors.purple,
+              onPressed: addTxnLocal,
             )
           ],
         ),

@@ -14,6 +14,7 @@ class ShowTx extends StatelessWidget {
         itemCount: transactions.length,
         itemBuilder: (context, index) {
           return Card(
+            color: Theme.of(context).accentColor,
             margin: EdgeInsets.all(10),
             elevation: 10,
             child: Row(
@@ -22,7 +23,7 @@ class ShowTx extends StatelessWidget {
                   padding: EdgeInsets.all(10),
                   margin: EdgeInsets.all(10),
                   child: Text(
-                    transactions[index].amount.toString(),
+                    "Rs ${transactions[index].amount.toStringAsFixed(2)}",
                     style: TextStyle(fontSize: 19),
                   ),
                   decoration: BoxDecoration(
