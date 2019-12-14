@@ -1,4 +1,5 @@
 import './widgets/ShowTx.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import './Models/Transaction.dart';
 
@@ -11,9 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.teal,
-        accentColor: Colors.limeAccent
+        accentColor: Colors.limeAccent,
+        textTheme: TextTheme(body1: GoogleFonts.quicksand()),
       ),
       title: 'Expense Planner',
       home: MyHomePage(),
@@ -43,24 +46,27 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   final List<Transaction> transactions = [
-    Transaction(
-      amount: 250,
-      item: 'Shoes',
-      id: DateTime.now().toString(),
-      date: DateTime.now(),
-    ),
-    Transaction(
-      date: DateTime.now(),
-      id: DateTime.now().toString(),
-      item: 'Grocery',
-      amount: 200,
-    ),
+    // Transaction(
+    //   amount: 250,
+    //   item: 'Shoes',
+    //   id: DateTime.now().toString(),
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   date: DateTime.now(),
+    //   id: DateTime.now().toString(),
+    //   item: 'Grocery',
+    //   amount: 200,
+    // ),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Expense Planner"),
+        title: Text(
+          "Expense Planner",
+          style: GoogleFonts.anonymousPro(fontWeight: FontWeight.bold, textStyle: TextStyle(letterSpacing: 3)),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
