@@ -1,3 +1,5 @@
+import './widgets/chart.dart';
+
 import './widgets/ShowTx.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -30,6 +32,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  List<Transaction> get last7DaysTx{
+    return transactions.where((tx){
+      return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
+
   void startAddTxn(context) {
     showModalBottomSheet(
       context: context,
@@ -45,43 +54,36 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  final List<Transaction> transactions = [
-    // Transaction(
-    //   amount: 250,
-    //   item: 'Shoes',
-    //   id: DateTime.now().toString(),
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   date: DateTime.now(),
-    //   id: DateTime.now().toString(),
-    //   item: 'Grocery',
-    //   amount: 200,
-    // ),
-  ];
+  final List<Transaction> transactions = [];
+  //   Transaction(
+  //     amount: 250,
+  //     item: 'Shoes',
+  //     id: DateTime.now().toString(),
+  //     date: DateTime.now(),
+  //   ),
+  //   Transaction(
+  //     date: DateTime.now(),
+  //     id: DateTime.now().toString(),
+  //     item: 'Grocery',
+  //     amount: 200,
+  //   ),
+  // ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "Expense Planner",
-          style: GoogleFonts.anonymousPro(fontWeight: FontWeight.bold, textStyle: TextStyle(letterSpacing: 3)),
+          style: GoogleFonts.anonymousPro(
+              fontWeight: FontWeight.bold,
+              textStyle: TextStyle(letterSpacing: 3)),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(10),
-              child: Card(
-                child: Text("Graph Here"),
-                elevation: 5,
-                color: Theme.of(context).primaryColor,
-                margin: EdgeInsets.all(10),
-              ),
-            ),
+            Chart(last7DaysTx),
             // AddTx(addTxnMethod),
             ShowTx(transactions),
           ],
