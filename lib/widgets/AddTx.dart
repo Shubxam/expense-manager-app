@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Models/Transaction.dart';
+import 'package:intl/intl.dart';
 
 class AddTx extends StatefulWidget {
   final Function addTxnFn;
@@ -13,6 +14,7 @@ class _AddTxState extends State<AddTx> {
   final titleController = TextEditingController();
 
   final amountController = TextEditingController();
+  DateTime selectedDate;
 
   void addTxnLocal() {
     if ((titleController.text).isEmpty ||
@@ -24,10 +26,26 @@ class _AddTxState extends State<AddTx> {
         amount: double.parse(amountController.text),
         item: titleController.text,
         id: DateTime.now().toString(),
-        date: DateTime.now(),
+        date: selectedDate,
       ),
     );
     Navigator.of(context).pop();
+  }
+
+  void pickDate() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        selectedDate = pickedDate;
+      });
+    });
   }
 
   @override
@@ -55,10 +73,38 @@ class _AddTxState extends State<AddTx> {
               //   addTxnLocal();
               // },
             ),
-            FlatButton(
-              child: Text("Submit"),
-              textColor: Colors.purple,
-              onPressed: addTxnLocal,
+            Container(
+              height: 70,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    selectedDate == null
+                        ? "No date selected"
+                        : "Selected date is : ${DateFormat.yMMMd().format(selectedDate)}",
+                  ),
+                  FlatButton(
+                    child: Text(
+                      "Select date",
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: pickDate,
+                  ),
+                ],
+              ),
+            ),
+            Center(
+              child: RaisedButton(
+                child: Text(
+                  "Add Transaction",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: Theme.of(context).primaryColor,
+                onPressed: addTxnLocal,
+              ),
             )
           ],
         ),

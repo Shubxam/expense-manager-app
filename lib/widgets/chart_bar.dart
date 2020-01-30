@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../widgets/chart.dart';
 
 class ChartBar extends StatelessWidget {
   final String weekDay;
@@ -12,8 +10,11 @@ class ChartBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        FittedBox(
-          child: Text("Rs ${spendingTotal.toStringAsFixed(0)}"),
+        Container(
+          height: 20,
+          child: FittedBox(
+            child: Text("Rs ${spendingTotal.toStringAsFixed(0)}"),
+          ),
         ),
         SizedBox(
           height: 4,
@@ -48,7 +49,7 @@ class ChartBar extends StatelessWidget {
         SizedBox(
           height: 4,
         ),
-        Text("${weekDay}")
+        Text("$weekDay")
       ],
     );
   }

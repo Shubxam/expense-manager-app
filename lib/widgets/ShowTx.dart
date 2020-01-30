@@ -4,7 +4,8 @@ import 'package:intl/intl.dart';
 
 class ShowTx extends StatelessWidget {
   final List<Transaction> transactions;
-  ShowTx(this.transactions);
+  final Function deleteTx;
+  ShowTx(this.transactions, this.deleteTx);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,9 @@ class ShowTx extends StatelessWidget {
                   "No Transactions",
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 Image.asset(
                   'assets/waiting.png',
                   height: 500,
@@ -29,37 +32,31 @@ class ShowTx extends StatelessWidget {
               itemCount: transactions.length,
               itemBuilder: (context, index) {
                 return Card(
-                  color: Theme.of(context).accentColor,
-                  margin: EdgeInsets.all(10),
                   elevation: 10,
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        margin: EdgeInsets.all(10),
-                        child: Text(
-                          "Rs ${transactions[index].amount.toStringAsFixed(2)}",
-                          style: TextStyle(fontSize: 19),
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black12),
-                          borderRadius: BorderRadius.circular(5),
+                  margin: EdgeInsets.all(10),
+                  child: ListTile(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                    leading: CircleAvatar(
+                      radius: 30,
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: FittedBox(
+                          child: Text("Rs ${transactions[index].amount}"),
                         ),
                       ),
-                      Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              transactions[index].item,
-                              style: TextStyle(fontSize: 19),
-                            ),
-                            Text(DateFormat.yMMMMd()
-                                .format(transactions[index].date)),
-                          ],
-                        ),
-                      ),
-                    ],
+                    ),
+                    title: Text(
+                      '${transactions[index].item}',
+                      style: TextStyle(),
+                    ),
+                    subtitle: Text(
+                        DateFormat.yMMMd().format(transactions[index].date)),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => deleteTx(transactions[index].id),
+                      color: Theme.of(context).errorColor,
+                    ),
                   ),
                 );
               },
