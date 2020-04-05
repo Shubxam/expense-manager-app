@@ -10,7 +10,7 @@ class ShowTx extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 600,
+      // height: MediaQuery.of(context).size.height * 0.6,
       child: transactions.isEmpty
           ? Column(
               children: <Widget>[
@@ -23,7 +23,7 @@ class ShowTx extends StatelessWidget {
                 ),
                 Image.asset(
                   'assets/waiting.png',
-                  height: 500,
+                  height: 400,
                   fit: BoxFit.fitHeight,
                 ),
               ],
@@ -51,7 +51,7 @@ class ShowTx extends StatelessWidget {
                       style: TextStyle(),
                     ),
                     subtitle: Text(
-                        DateFormat.yMMMd().format(transactions[index].date)),
+                        "${DateFormat('Hms', 'en_US').parse(transactions[index].date)}"),
                     trailing: IconButton(
                       icon: Icon(Icons.delete),
                       onPressed: () => deleteTx(transactions[index].id),
